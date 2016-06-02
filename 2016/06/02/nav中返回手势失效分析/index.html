@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>nav中返回手势失效分析 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="NavBar自定义返回按钮后，滑动返回不好用了，解决办法分析：滑动返回不好用了，是因为navVc中代理惹的祸，所以我们可以从代理入手
+
+1、实现思路：在根NavVc中，当发生push操作，将self.interactivePopGestureRecognizer.delegate = nil，当视图返回到根控制器的时候，在将self.interactivePopGestureRecognizer.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nav中返回手势失效分析">
+<meta property="og:url" content="http://yoursite.com/2016/06/02/nav中返回手势失效分析/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="NavBar自定义返回按钮后，滑动返回不好用了，解决办法分析：滑动返回不好用了，是因为navVc中代理惹的祸，所以我们可以从代理入手
+
+1、实现思路：在根NavVc中，当发生push操作，将self.interactivePopGestureRecognizer.delegate = nil，当视图返回到根控制器的时候，在将self.interactivePopGestureRecognizer.">
+<meta property="og:updated_time" content="2016-06-02T04:03:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nav中返回手势失效分析">
+<meta name="twitter:description" content="NavBar自定义返回按钮后，滑动返回不好用了，解决办法分析：滑动返回不好用了，是因为navVc中代理惹的祸，所以我们可以从代理入手
+
+1、实现思路：在根NavVc中，当发生push操作，将self.interactivePopGestureRecognizer.delegate = nil，当视图返回到根控制器的时候，在将self.interactivePopGestureRecognizer.">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-nav中返回手势失效分析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/02/nav中返回手势失效分析/" class="article-date">
+  <time datetime="2016-06-02T04:02:47.000Z" itemprop="datePublished">2016-06-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      nav中返回手势失效分析
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>NavBar自定义返回按钮后，滑动返回不好用了，解决办法<br>分析：滑动返回不好用了，是因为navVc中代理惹的祸，所以我们可以从代理入手</p>
+<ul>
+<li>1、实现思路：在根NavVc中，当发生push操作，将<code>self.interactivePopGestureRecognizer.delegate = nil</code>，当视图返回到根控制器的时候，在将<code>self.interactivePopGestureRecognizer.delegate</code>还原下，即可解决问题。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">// 这是个继承NavVc的根类</span><br><span class="line">import &quot;LYNavigationViewController.h&quot;</span><br><span class="line">@interface LYNavigationViewController ()&lt;UINavigationControllerDelegate&gt; // 实现代理</span><br><span class="line">@property (nonatomic, strong) id popDelegate; // 定义个强指针，保存代理变量</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation LYNavigationViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    </span><br><span class="line">    // 清空手势的代理，完成侧滑功能，但是在根控制器在滑一次的时候，就出现bug</span><br><span class="line">    // 当回到根视图控制器的时候，把代理再还回来</span><br><span class="line">    self.popDelegate = self.interactivePopGestureRecognizer.delegate;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 重写Push方法</span><br><span class="line">- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    // 非根控制器跳转的时候，隐藏底部工具条</span><br><span class="line">    if (self.viewControllers.count != 0) &#123;</span><br><span class="line">    // 这说明不是根控制器Vc，下面的代码是自定义返回按钮</span><br><span class="line">        viewController.hidesBottomBarWhenPushed = YES;</span><br><span class="line">        viewController.navigationItem.leftBarButtonItem = (&#123;</span><br><span class="line">            UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageWithOriRenderImg:@&quot;NavBack&quot;] style:UIBarButtonItemStylePlain target:self action:@selector(back:)];</span><br><span class="line">            item;</span><br><span class="line">        &#125;);</span><br><span class="line">        // 清空代理</span><br><span class="line">        self.interactivePopGestureRecognizer.delegate = nil;</span><br><span class="line">    &#125;</span><br><span class="line">    [super pushViewController:viewController animated:animated];</span><br><span class="line">&#125;</span><br><span class="line">- (void)back:(UIBarButtonItem *)sender</span><br><span class="line">&#123;</span><br><span class="line">    [self popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">pragma mark - NavgationDelegate</span><br><span class="line">// 当控制器Vc完全展示的时候就会走这方法</span><br><span class="line">- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated</span><br><span class="line">&#123;</span><br><span class="line">    // 如果展示的控制器是根视图控制器，还原pop手势代理</span><br><span class="line">    // 监听所有的控制器</span><br><span class="line">    if (viewController == [self.viewControllers firstObject]) &#123;</span><br><span class="line">    // 还原代理方法</span><br><span class="line">        self.interactivePopGestureRecognizer.delegate = self.popDelegate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<ul>
+<li>ok</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/02/nav中返回手势失效分析/" data-id="cioxs682k0001yesb9f9q7p0i" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/02/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/06/02/nav中返回手势失效分析/">nav中返回手势失效分析</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/02/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
